@@ -57,6 +57,11 @@ functions:
     - http:
         path: echo
         method: get
+    - sqs:
+        arn:
+          Fn::GetAtt:
+            - MyQ
+            - Arn
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
@@ -96,7 +101,12 @@ functions:
 #    Define function environment variables here
 #    environment:
 #      variable2: value2
-
+resources:
+  Resources:
+    MyQ:
+      Type: "AWS::SQS::Queue"
+      Properties:
+        QueueName: "MyQueue"
 # you can add CloudFormation resource templates here
 #resources:
 #  Resources:
