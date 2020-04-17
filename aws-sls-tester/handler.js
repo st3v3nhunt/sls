@@ -1,7 +1,4 @@
-'use strict';
-
-module.exports.hello = async event => {
-  console.log(event);
+module.exports.echo = async event => {
   return {
     statusCode: 200,
     body: JSON.stringify(
@@ -13,7 +10,13 @@ module.exports.hello = async event => {
       2
     ),
   };
+};
 
-  // Use this code if you don't use the http event with the LAMBDA-PROXY integration
-  // return { message: 'Go Serverless v1.0! Your function executed successfully!', event };
+module.exports.processQ = async event => {
+  console.log(`${event.Records.length}`);
+  for (const record of event.Records) {
+    const messageAttributes = record.messageAttributes;
+    console.log('Message Attributtes -->  ', messageAttributes.AttributeNameHere.stringValue);
+    console.log('Message Body -->  ', record.body);
+  }
 };

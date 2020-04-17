@@ -51,12 +51,15 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  hello:
-    handler: handler.hello
+  echo:
+    handler: handler.echo
     events:
     - http:
         path: echo
         method: get
+  processQ:
+    handler: handler.processQ
+    events:
     - sqs:
         arn:
           Fn::GetAtt:
