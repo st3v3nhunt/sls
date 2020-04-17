@@ -1,18 +1,19 @@
 const SQS = require('aws-sdk/clients/sqs');
 
 module.exports.echo = async (event, ctx) => {
+  console.log('*****************ctx:');
+  console.log(ctx);
   const region = ctx.invokedFunctionArn.split(':')[3];
   const accountId = ctx.invokedFunctionArn.split(':')[4];
   const queueName = 'MyQueue'; // comes from serverless.yml config
   const queueUrl = `https://sqs.${region}.amazonaws.com/${accountId}/${queueName}`;
-  // const sqs = new SQS();
+  console.log(`queueUrl: ${queueUrl}`);
 
   await new SQS().sendMessage({
     MessageBody: "MessageBody",
     QueueUrl: queueUrl,
   }).promise();
   console.log(`Message sent to queue: ${queueUrl}`);
-  // console.log(sqs);
 
   return {
     statusCode: 200,
