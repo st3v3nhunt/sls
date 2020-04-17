@@ -1,6 +1,6 @@
 {
   "name": "aws-sls-tester",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "> Create an http endpoint that will create a message, place it on a queue that   will in turn be processed. The http endpoint will respond with the details of   the event that called it.",
   "main": "handler.js",
   "dependencies": {
@@ -8,8 +8,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\""
   },
-  "author": "",
+  "author": "st3v3nhunt",
   "license": "ISC"
 }
