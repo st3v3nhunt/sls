@@ -11,7 +11,7 @@ provider:
     Action:
     - sqs:SendMessage
     Resource:
-    - Fn::GetAtt: [ MyQueue, Arn ]
+    - Fn::GetAtt: [ MyQ, Arn ]
 
 functions:
   echo:
