@@ -13,10 +13,8 @@ module.exports.echo = async event => {
 };
 
 module.exports.processQ = async event => {
-  console.log(`${event.Records.length}`);
-  for (const record of event.Records) {
-    const messageAttributes = record.messageAttributes;
-    console.log('Message Attributtes -->  ', messageAttributes.AttributeNameHere.stringValue);
-    console.log('Message Body -->  ', record.body);
-  }
+  console.log(`Number of records in message: ${event.Records.length}`);
+  event.Records.forEach((record, idx) => {
+    console.log(`Record (${idx}): `, record);
+  });
 };
