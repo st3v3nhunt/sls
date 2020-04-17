@@ -6,6 +6,12 @@ provider:
   name: aws
   runtime: nodejs12.x
   profile: personal-profile
+  iamRoleStatements:
+  - Effect: Allow
+    Action:
+    - sqs:SendMessage
+    Resource:
+    - Fn::GetAtt: [ MyQueue, Arn ]
 
 functions:
   echo:
@@ -26,6 +32,6 @@ functions:
 resources:
   Resources:
     MyQ:
-      Type: "AWS::SQS::Queue"
+      Type: AWS::SQS::Queue
       Properties:
-        QueueName: "MyQueue"
+        QueueName: MyQueue
