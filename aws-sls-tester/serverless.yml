@@ -34,4 +34,4 @@ resources:
     MyQ:
       Type: AWS::SQS::Queue
       Properties:
-        QueueName: MyQueue
+        QueueName: MyQueue-${opt:stage}
