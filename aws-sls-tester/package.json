@@ -10,7 +10,7 @@
     "standard": "^14.3.3"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\""
+    "test": "standard"
   },
   "author": "st3v3nhunt",
   "license": "ISC"
