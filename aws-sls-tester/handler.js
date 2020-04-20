@@ -10,6 +10,15 @@ module.exports.echo = async (event, ctx) => {
   console.log(`queueUrl: ${queueUrl}`);
   const body = event.body;
 
+  if (!body) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({
+        message: 'nah, nah, nah!'
+      }),
+    }
+  }
+
   await new SQS().sendMessage({
     MessageBody: body,
     QueueUrl: queueUrl,
