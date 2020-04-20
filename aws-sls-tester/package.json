@@ -6,7 +6,9 @@
   "dependencies": {
     "aws-sdk": "^2.657.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "standard": "^14.3.3"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\""
   },
