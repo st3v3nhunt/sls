@@ -21,7 +21,7 @@ functions:
         path: echo
         method: post
     environment:
-      QUEUE_NAME: MyQueue-${opt:stage}
+      QUEUE_NAME: ${self:custom.queue}
   processQ:
     handler: handler.processQ
     events:
@@ -36,4 +36,7 @@ resources:
     MyQ:
       Type: AWS::SQS::Queue
       Properties:
-        QueueName: MyQueue-${opt:stage}
+        QueueName: ${self:custom.queue}
+
+custom:
+  queue: MyQueue-${opt:stage}
