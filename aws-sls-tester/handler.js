@@ -1,6 +1,7 @@
 const SQS = require('aws-sdk/clients/sqs');
 
 module.exports.echo = async (event, ctx) => {
+  const body = event.body;
   if (!body) {
     return {
       statusCode: 400,
@@ -18,7 +19,6 @@ module.exports.echo = async (event, ctx) => {
   const queueName = 'MyQueue'; // comes from serverless.yml config
   const queueUrl = `https://sqs.${region}.amazonaws.com/${accountId}/${queueName}`;
   console.log(`queueUrl: ${queueUrl}`);
-  const body = event.body;
 
   await new SQS().sendMessage({
     MessageBody: body,
