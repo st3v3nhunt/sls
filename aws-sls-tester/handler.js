@@ -8,9 +8,10 @@ module.exports.echo = async (event, ctx) => {
   const queueName = 'MyQueue'; // comes from serverless.yml config
   const queueUrl = `https://sqs.${region}.amazonaws.com/${accountId}/${queueName}`;
   console.log(`queueUrl: ${queueUrl}`);
+  const body = event.body;
 
   await new SQS().sendMessage({
-    MessageBody: "MessageBody",
+    MessageBody: body,
     QueueUrl: queueUrl,
   }).promise();
   console.log(`Message sent to queue: ${queueUrl}`);

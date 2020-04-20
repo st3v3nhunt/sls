@@ -19,7 +19,7 @@ functions:
     events:
     - http:
         path: echo
-        method: get
+        method: post
   processQ:
     handler: handler.processQ
     events:
