@@ -20,6 +20,8 @@ functions:
     - http:
         path: echo
         method: post
+    environment:
+      QUEUE_NAME: MyQueue-${opt:stage}
   processQ:
     handler: handler.processQ
     events:

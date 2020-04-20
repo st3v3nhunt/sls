@@ -16,7 +16,7 @@ module.exports.echo = async (event, ctx) => {
 
   const region = ctx.invokedFunctionArn.split(':')[3]
   const accountId = ctx.invokedFunctionArn.split(':')[4]
-  const queueName = 'MyQueue' // comes from serverless.yml config
+  const queueName = process.env.QUEUE_NAME
   const queueUrl = `https://sqs.${region}.amazonaws.com/${accountId}/${queueName}`
   console.log(`queueUrl: ${queueUrl}`)
 
