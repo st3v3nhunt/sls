@@ -1,5 +1,4 @@
 const AWS = require('aws-sdk')
-const fs = require('fs').promises
 
 const s3 = new AWS.S3()
 const sqs = new AWS.SQS()
