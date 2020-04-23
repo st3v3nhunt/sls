@@ -32,6 +32,12 @@ functions:
             - Arn
     environment:
       BUCKET: ${self:custom.bucket}
+  view:
+    handler: handler.view
+    events:
+    - http:
+        path: view
+        method: get
 
 resources:
   Resources:
