@@ -6,12 +6,13 @@ const sqs = new AWS.SQS()
 module.exports.submit = async (event, ctx) => {
   console.log(event)
   const body = event.body
-  if (!body || !body.message) {
+  if (!body) {
     return {
       statusCode: 400,
       body: JSON.stringify({ message: 'Please supply a message in the body.' })
     }
   }
+  const message = JSON.parse(body).message
 
   const region = ctx.invokedFunctionArn.split(':')[3]
   const accountId = ctx.invokedFunctionArn.split(':')[4]
@@ -19,13 +20,13 @@ module.exports.submit = async (event, ctx) => {
   const queueUrl = `https://sqs.${region}.amazonaws.com/${accountId}/${queueName}`
 
   await sqs.sendMessage({
-    MessageBody: JSON.stringify({ message: body.message }),
+    MessageBody: JSON.stringify({ message }),
     QueueUrl: queueUrl
   }).promise()
 
   return {
     statusCode: 200,
-    body: JSON.stringify({ message: `${body.message} is being processed.` })
+    body: JSON.stringify({ message: `${message} is being processed.` })
   }
 }
 
@@ -36,7 +37,7 @@ module.exports.process = async event => {
     await s3.putObject({
       Bucket: process.env.BUCKET,
       Key: 'temp.txt',
-      Body: record.body.message
+      Body: JSON.parse(record.body).message
     }).promise()
     console.log('File has been created in s3')
   })
