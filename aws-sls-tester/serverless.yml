@@ -14,22 +14,24 @@ provider:
     - Fn::GetAtt: [ MyQ, Arn ]
 
 functions:
-  echo:
-    handler: handler.echo
+  submit:
+    handler: handler.submit
     events:
     - http:
-        path: echo
+        path: submit
         method: post
     environment:
       QUEUE_NAME: ${self:custom.queue}
-  processQ:
-    handler: handler.processQ
+  process:
+    handler: handler.process
     events:
     - sqs:
         arn:
           Fn::GetAtt:
             - MyQ
             - Arn
+    environment:
+      BUCKET: ${self:custom.bucket}
 
 resources:
   Resources:
@@ -39,4 +41,5 @@ resources:
         QueueName: ${self:custom.queue}
 
 custom:
+  bucket: aws-lmda-test-bucket
   queue: MyQueue-${opt:stage}
