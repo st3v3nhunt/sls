@@ -54,7 +54,7 @@ module.exports.process = async event => {
 
 module.exports.view = async event => {
   const buf = await s3.getObject({
-    Bucket: process.env.BUCKET,
+    Bucket: 'aws-lmda-test-bucket',
     Key: 'temp.txt'
   }).promise()
 
