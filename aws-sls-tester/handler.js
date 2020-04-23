@@ -30,14 +30,14 @@ module.exports.submit = async (event, ctx) => {
 }
 
 module.exports.process = async event => {
+  const buf = Buffer.from('some string')
   event.Records.forEach(async (record, idx) => {
     console.log(record)
-    await fs.writeFile('temp.txt', 'record.message', 'utf8')
     console.log('Processing message.')
     s3.putObject({
       Bucket: process.env.BUCKET,
       Key: 'temp.txt',
-      Body: await fs.readFile('temp.txt')
+      Body: buf
     })
   })
 }
