@@ -1,6 +1,9 @@
 const AWS = require('aws-sdk')
 const fs = require('fs').promises
 
+const s3 = new AWS.S3()
+const sqs = new AWS.SQS()
+
 module.exports.submit = async (event, ctx) => {
   const imageUrl = event.imageUrl
   if (!imageUrl) {
@@ -15,8 +18,8 @@ module.exports.submit = async (event, ctx) => {
   const queueName = process.env.QUEUE_NAME
   const queueUrl = `https://sqs.${region}.amazonaws.com/${accountId}/${queueName}`
 
-  await new AWS.SQS().sendMessage({
-    MessageBody: { imageUrl },
+  await sqs.sendMessage({
+    MessageBody: JSON.stringify({ imageUrl }),
     QueueUrl: queueUrl
   }).promise()
 
@@ -27,7 +30,6 @@ module.exports.submit = async (event, ctx) => {
 }
 
 module.exports.process = async event => {
-  const s3 = await new AWS.S3()
   event.Records.forEach(async (record, idx) => {
     console.log(record)
     await fs.writeFile('temp.txt', 'record.message', 'utf8')
