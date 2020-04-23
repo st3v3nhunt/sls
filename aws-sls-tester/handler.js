@@ -31,7 +31,9 @@ module.exports.submit = async (event, ctx) => {
 }
 
 module.exports.process = async event => {
-  event.Records.forEach(async (record, idx) => {
+  console.log('Starting to process the message...')
+  console.log(event)
+  event.Records.forEach(async record => {
     console.log('Message body:')
     console.log(record.body)
     await s3.putObject({
