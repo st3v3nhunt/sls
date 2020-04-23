@@ -56,6 +56,6 @@ module.exports.view = async event => {
   })
   return {
     statusCode: 200,
-    body: JSON.parse(buf.toString())
+    body: buf.toString()
   }
 }
