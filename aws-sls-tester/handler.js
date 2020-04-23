@@ -18,7 +18,7 @@ module.exports.submit = async (event, ctx) => {
   const queueUrl = `https://sqs.${region}.amazonaws.com/${accountId}/${queueName}`
 
   await sqs.sendMessage({
-    MessageBody: JSON.stringify({ messge: body.message }),
+    MessageBody: JSON.stringify({ message: body.message }),
     QueueUrl: queueUrl
   }).promise()
 
