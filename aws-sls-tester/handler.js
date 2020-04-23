@@ -4,6 +4,7 @@ const s3 = new AWS.S3()
 const sqs = new AWS.SQS()
 
 module.exports.submit = async (event, ctx) => {
+  console.log(event)
   const body = event.body
   if (!body || !body.message) {
     return {
