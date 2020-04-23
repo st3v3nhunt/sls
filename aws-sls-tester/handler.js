@@ -40,7 +40,11 @@ module.exports.process = async event => {
       Bucket: process.env.BUCKET,
       Key: 'temp.txt',
       Body: JSON.parse(record.body).message
-    }).promise()
+    })
+      .promise()
+      .catch((err) => {
+        console.log(err)
+      })
     console.log('File has been created in s3')
   })
 }
