@@ -45,7 +45,10 @@ module.exports.process = async event => {
       .catch((err) => {
         console.log(err)
       })
-    console.log('File has been created in s3')
+      .then((msg) => {
+        console.log('File has been created in s3')
+        console.log(msg)
+      })
   })
 }
 
@@ -53,9 +56,10 @@ module.exports.view = async event => {
   const buf = await s3.getObject({
     Bucket: process.env.BUCKET,
     Key: 'temp.txt'
-  })
+  }).promise()
+
   return {
     statusCode: 200,
-    body: buf.toString()
+    body: buf.Body.toString()
   }
 }
