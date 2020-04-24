@@ -20,7 +20,7 @@ provider:
       Fn::Join:
         - ''
         - - 'arn:aws:s3:::'
-        - Ref: ${self:custom.queue}
+          - Ref: ${self:custom.queue}
 
 
 functions:
