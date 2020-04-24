@@ -19,8 +19,7 @@ provider:
     Resource:
       Fn::Join:
         - ''
-        - - 'arn:aws:s3:::'
-          - Ref: ${self:custom.queue}
+        - - arn:aws:s3:::${self:custom.bucket}
 
 
 functions:
