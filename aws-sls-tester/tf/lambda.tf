@@ -89,3 +89,31 @@ resource "aws_lambda_permission" "submit" {
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_api_gateway_rest_api.submit.execution_arn}/*/*"
 }
+
+# create policy with access to s3
+resource "aws_iam_policy" "policy" {
+  name        = "s3-access-policy"
+  description = "a policy with access to s3"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+      {
+          "Effect": "Allow",
+          "Action": [
+              "s3:PutObject",
+              "s3:GetObject"
+          ],
+          "Resource": "arn:aws:s3:::*"
+      }
+  ]
+}
+EOF
+}
+
+# attach the s3 policy to the lambda role
+resource "aws_iam_role_policy_attachment" "attach" {
+  role       = aws_iam_role.lambda_exec.name
+  policy_arn = aws_iam_policy.policy.arn
+}
