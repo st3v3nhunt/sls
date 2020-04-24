@@ -12,6 +12,16 @@ provider:
     - sqs:SendMessage
     Resource:
     - Fn::GetAtt: [ MyQ, Arn ]
+  - Effect: Allow
+    Action:
+    - s3:PutObject
+    - s3:GetObject
+    Resource:
+      Fn::Join:
+        - ''
+        - - 'arn:aws:s3:::'
+        - Ref: ${self:custom.queue}
+
 
 functions:
   submit:
