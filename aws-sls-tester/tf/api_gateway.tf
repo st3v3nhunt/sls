@@ -76,9 +76,10 @@ resource "aws_api_gateway_deployment" "submit" {
   stage_name  = "test"
 }
 
-# output "base_url-process" {
-#   value = aws_api_gateway_deployment.submit.invoke_url
-# }
+output "base_url-submit" {
+  value = aws_api_gateway_deployment.submit.invoke_url
+}
+
 # resource "aws_api_gateway_rest_api" "process" {
 #   name        = "process"
 #   description = "Terraform Serverless Application Example"
