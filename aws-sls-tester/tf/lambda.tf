@@ -74,13 +74,13 @@ resource "aws_lambda_permission" "view" {
   source_arn    = "${aws_api_gateway_rest_api.view.execution_arn}/*/*"
 }
 
-resource "aws_lambda_permission" "process" {
-  statement_id  = "AllowAPIGatewayInvoke"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.process.function_name
-  principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_api_gateway_rest_api.process.execution_arn}/*/*"
-}
+# resource "aws_lambda_permission" "process" {
+#   statement_id  = "AllowAPIGatewayInvoke"
+#   action        = "lambda:InvokeFunction"
+#   function_name = aws_lambda_function.process.function_name
+#   principal     = "apigateway.amazonaws.com"
+#   source_arn    = "${aws_api_gateway_rest_api.process.execution_arn}/*/*"
+# }
 
 resource "aws_lambda_permission" "submit" {
   statement_id  = "AllowAPIGatewayInvoke"

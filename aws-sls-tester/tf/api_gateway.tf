@@ -76,46 +76,46 @@ resource "aws_api_gateway_deployment" "submit" {
   stage_name  = "test"
 }
 
-output "base_url-process" {
-  value = aws_api_gateway_deployment.submit.invoke_url
-}
-resource "aws_api_gateway_rest_api" "process" {
-  name        = "process"
-  description = "Terraform Serverless Application Example"
-}
+# output "base_url-process" {
+#   value = aws_api_gateway_deployment.submit.invoke_url
+# }
+# resource "aws_api_gateway_rest_api" "process" {
+#   name        = "process"
+#   description = "Terraform Serverless Application Example"
+# }
 
-resource "aws_api_gateway_resource" "process" {
-  rest_api_id = aws_api_gateway_rest_api.process.id
-  parent_id   = aws_api_gateway_rest_api.process.root_resource_id
-  path_part   = "hello"
-}
+# resource "aws_api_gateway_resource" "process" {
+#   rest_api_id = aws_api_gateway_rest_api.process.id
+#   parent_id   = aws_api_gateway_rest_api.process.root_resource_id
+#   path_part   = "hello"
+# }
 
-resource "aws_api_gateway_method" "process" {
-  rest_api_id   = aws_api_gateway_rest_api.process.id
-  resource_id   = aws_api_gateway_resource.process.id
-  http_method   = "GET"
-  authorization = "NONE"
-}
-resource "aws_api_gateway_integration" "process" {
-  rest_api_id = aws_api_gateway_rest_api.process.id
-  resource_id = aws_api_gateway_method.process.resource_id
-  http_method = aws_api_gateway_method.process.http_method
+# resource "aws_api_gateway_method" "process" {
+#   rest_api_id   = aws_api_gateway_rest_api.process.id
+#   resource_id   = aws_api_gateway_resource.process.id
+#   http_method   = "GET"
+#   authorization = "NONE"
+# }
+# resource "aws_api_gateway_integration" "process" {
+#   rest_api_id = aws_api_gateway_rest_api.process.id
+#   resource_id = aws_api_gateway_method.process.resource_id
+#   http_method = aws_api_gateway_method.process.http_method
 
-  integration_http_method = "POST"
-  type                    = "AWS"
-  uri                     = aws_lambda_function.process.invoke_arn
-}
+#   integration_http_method = "POST"
+#   type                    = "AWS"
+#   uri                     = aws_lambda_function.process.invoke_arn
+# }
 
-resource "aws_api_gateway_deployment" "process" {
-  depends_on = [
-    aws_api_gateway_integration.process
-    # aws_api_gateway_integration.lambda_root,
-  ]
+# resource "aws_api_gateway_deployment" "process" {
+#   depends_on = [
+#     aws_api_gateway_integration.process
+#     # aws_api_gateway_integration.lambda_root,
+#   ]
 
-  rest_api_id = aws_api_gateway_rest_api.process.id
-  stage_name  = "test"
-}
+#   rest_api_id = aws_api_gateway_rest_api.process.id
+#   stage_name  = "test"
+# }
 
-output "base_url-submit" {
-  value = aws_api_gateway_deployment.process.invoke_url
-}
+# output "base_url-submit" {
+#   value = aws_api_gateway_deployment.process.invoke_url
+# }
