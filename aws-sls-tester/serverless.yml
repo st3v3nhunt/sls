@@ -38,6 +38,8 @@ functions:
     - http:
         path: view
         method: get
+    environment:
+      BUCKET: ${self:custom.bucket}
 
 resources:
   Resources:

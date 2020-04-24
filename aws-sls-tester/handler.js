@@ -42,19 +42,19 @@ module.exports.process = async event => {
       Body: JSON.parse(record.body).message
     })
       .promise()
-      .catch((err) => {
-        console.log(err)
-      })
       .then((msg) => {
         console.log('File has been created in s3')
         console.log(msg)
+      })
+      .catch((err) => {
+        console.log(err)
       })
   })
 }
 
 module.exports.view = async event => {
   const buf = await s3.getObject({
-    Bucket: 'aws-lmda-test-bucket',
+    Bucket: process.env.BUCKET,
     Key: 'temp.txt'
   }).promise()
 
