@@ -33,23 +33,32 @@ module.exports.submit = async (event, ctx) => {
 module.exports.process = async event => {
   console.log('Starting to process the message...')
   console.log(event)
-  event.Records.forEach(async record => {
+  const promises = []
+  event.Records.forEach(record => {
     console.log('Message body:')
     console.log(record.body)
-    await s3.putObject({
+    promises.push(s3.putObject({
       Bucket: process.env.BUCKET,
       Key: 'temp.txt',
       Body: JSON.parse(record.body).message
     })
       .promise()
-      .then((msg) => {
-        console.log('File has been created in s3')
-        console.log(msg)
-      })
       .catch((err) => {
         console.log(err)
+        throw new Error(err.message)
       })
+    )
   })
+
+  Promise.all(promises)
+    .then((msg) => {
+      console.log('Files have been created in s3')
+      console.log(msg)
+    })
+    .catch((err) => {
+      console.log(err)
+      throw new Error(err.message)
+    })
 }
 
 module.exports.view = async event => {
