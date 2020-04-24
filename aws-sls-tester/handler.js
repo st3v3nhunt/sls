@@ -50,6 +50,8 @@ module.exports.process = async event => {
     )
   })
 
+  console.log(`${promises.length} files will be uploaded.`)
+
   Promise.all(promises)
     .then((msg) => {
       console.log('Files have been created in s3')
