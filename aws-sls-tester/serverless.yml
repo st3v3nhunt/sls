@@ -12,24 +12,39 @@ provider:
     - sqs:SendMessage
     Resource:
     - Fn::GetAtt: [ MyQ, Arn ]
+  - Effect: Allow
+    Action:
+    - s3:PutObject
+    - s3:GetObject
+    Resource: "arn:aws:s3:::${self:custom.bucket}/*"
 
 functions:
-  echo:
-    handler: handler.echo
+  submit:
+    handler: handler.submit
     events:
     - http:
-        path: echo
+        path: submit
         method: post
     environment:
       QUEUE_NAME: ${self:custom.queue}
-  processQ:
-    handler: handler.processQ
+  process:
+    handler: handler.process
     events:
     - sqs:
         arn:
           Fn::GetAtt:
             - MyQ
             - Arn
+    environment:
+      BUCKET: ${self:custom.bucket}
+  view:
+    handler: handler.view
+    events:
+    - http:
+        path: view
+        method: get
+    environment:
+      BUCKET: ${self:custom.bucket}
 
 resources:
   Resources:
@@ -39,4 +54,5 @@ resources:
         QueueName: ${self:custom.queue}
 
 custom:
+  bucket: aws-lmda-test-bucket
   queue: MyQueue-${opt:stage}
