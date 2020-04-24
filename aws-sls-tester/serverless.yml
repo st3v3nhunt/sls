@@ -16,11 +16,7 @@ provider:
     Action:
     - s3:PutObject
     - s3:GetObject
-    Resource:
-      Fn::Join:
-        - ''
-        - - arn:aws:s3:::${self:custom.bucket}
-
+    Resource: "arn:aws:s3:::${self:custom.bucket}/*"
 
 functions:
   submit:
