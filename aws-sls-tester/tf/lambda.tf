@@ -1,9 +1,5 @@
-provider "aws" {
-  region  = "us-east-1"
-  profile = "personal-profile"
-}
-
-variable "app_version" {
+locals {
+  queue_name = replace("aws-lmda-test-sqs-${var.app_version}", ".", "-")
 }
 
 resource "aws_lambda_function" "view" {
@@ -43,6 +39,12 @@ resource "aws_lambda_function" "submit" {
   handler       = "handler.submit"
   runtime       = "nodejs12.x"
   role          = aws_iam_role.lambda_exec.arn
+
+  environment {
+    variables = {
+      QUEUE_NAME = local.queue_name
+    }
+  }
 }
 
 resource "aws_iam_role" "lambda_exec" {
@@ -63,7 +65,6 @@ resource "aws_iam_role" "lambda_exec" {
  ]
 }
 EOF
-
 }
 
 resource "aws_lambda_permission" "view" {
@@ -74,14 +75,6 @@ resource "aws_lambda_permission" "view" {
   source_arn    = "${aws_api_gateway_rest_api.view.execution_arn}/*/*"
 }
 
-# resource "aws_lambda_permission" "process" {
-#   statement_id  = "AllowAPIGatewayInvoke"
-#   action        = "lambda:InvokeFunction"
-#   function_name = aws_lambda_function.process.function_name
-#   principal     = "apigateway.amazonaws.com"
-#   source_arn    = "${aws_api_gateway_rest_api.process.execution_arn}/*/*"
-# }
-
 resource "aws_lambda_permission" "submit" {
   statement_id  = "AllowAPIGatewayInvoke"
   action        = "lambda:InvokeFunction"
@@ -90,10 +83,10 @@ resource "aws_lambda_permission" "submit" {
   source_arn    = "${aws_api_gateway_rest_api.submit.execution_arn}/*/*"
 }
 
-# create policy with access to s3
+# create policy with access to s3 and sqs
 resource "aws_iam_policy" "policy" {
-  name        = "s3-access-policy"
-  description = "a policy with access to s3"
+  name        = "lambda-access-policy-2"
+  description = "a policy with access to s3 and sqs"
 
   policy = <<EOF
 {
@@ -106,6 +99,16 @@ resource "aws_iam_policy" "policy" {
               "s3:GetObject"
           ],
           "Resource": "arn:aws:s3:::*"
+      },
+      {
+          "Effect": "Allow",
+          "Action": [
+              "sqs:SendMessage",
+              "sqs:DeleteMessage",
+              "sqs:ReceiveMessage",
+              "sqs:GetQueueAttributes"
+          ],
+          "Resource": "arn:aws:sqs:*:*:*"
       }
   ]
 }
@@ -116,4 +119,15 @@ EOF
 resource "aws_iam_role_policy_attachment" "attach" {
   role       = aws_iam_role.lambda_exec.name
   policy_arn = aws_iam_policy.policy.arn
+}
+
+# create sqs queue
+resource "aws_sqs_queue" "terraform_queue" {
+  name = local.queue_name
+}
+
+# add sqs event source for process lambda
+resource "aws_lambda_event_source_mapping" "example" {
+  event_source_arn = "${aws_sqs_queue.terraform_queue.arn}"
+  function_name    = "${aws_lambda_function.process.arn}"
 }

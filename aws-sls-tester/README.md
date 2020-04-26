@@ -10,3 +10,8 @@
 - `submit` - creates message from input
 - `process` - updates the s3 file
 - `view` - view contents of the s3 file
+
+## Setup
+
+- Install terraform and initialise it
+-
