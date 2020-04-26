@@ -4,7 +4,7 @@ locals {
 
 resource "aws_lambda_function" "view" {
   function_name = "view"
-  s3_bucket     = "aws-lambda-tf"
+  s3_bucket     = var.aws_lambda_deployment_bucket
   s3_key        = "v${var.app_version}/tf-lambda.zip"
   handler       = "handler.view"
   runtime       = "nodejs12.x"
@@ -19,7 +19,7 @@ resource "aws_lambda_function" "view" {
 
 resource "aws_lambda_function" "process" {
   function_name = "process"
-  s3_bucket     = "aws-lambda-tf"
+  s3_bucket     = var.aws_lambda_deployment_bucket
   s3_key        = "v${var.app_version}/tf-lambda.zip"
   handler       = "handler.process"
   runtime       = "nodejs12.x"
@@ -34,7 +34,7 @@ resource "aws_lambda_function" "process" {
 
 resource "aws_lambda_function" "submit" {
   function_name = "submit"
-  s3_bucket     = "aws-lambda-tf"
+  s3_bucket     = var.aws_lambda_deployment_bucket
   s3_key        = "v${var.app_version}/tf-lambda.zip"
   handler       = "handler.submit"
   runtime       = "nodejs12.x"
@@ -128,6 +128,6 @@ resource "aws_sqs_queue" "terraform_queue" {
 
 # add sqs event source for process lambda
 resource "aws_lambda_event_source_mapping" "example" {
-  event_source_arn = "${aws_sqs_queue.terraform_queue.arn}"
-  function_name    = "${aws_lambda_function.process.arn}"
+  event_source_arn = aws_sqs_queue.terraform_queue.arn
+  function_name    = aws_lambda_function.process.arn
 }

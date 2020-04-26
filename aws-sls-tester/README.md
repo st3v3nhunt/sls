@@ -26,9 +26,15 @@ In order to deploy the application via SLS framework
 
 ### Terraform
 
-In order to deploy the application via Terraform:
+In order to deploy the application via Terraform (tf), tf must be installed
+and initialised - this must be done within the `/tf` directory.
 
-- Install terraform and initialise it
+With tf installed the function must exist in the correct s3 bucket e.g.
+`aws-lambda-tf`.
+Because the only npm dependency is `aws-adk` (and this is pre-installed within
+the node runtime) the packaged function can just be the handler file i.e.
+`handler.js`. This results in simply zipping up the file and copying it into
+the s3 bucket being sufficient.
 
 ## Testing
 

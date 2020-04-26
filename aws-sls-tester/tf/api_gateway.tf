@@ -68,7 +68,6 @@ resource "aws_api_gateway_integration" "submit" {
 resource "aws_api_gateway_deployment" "submit" {
   depends_on = [
     aws_api_gateway_integration.submit
-    # aws_api_gateway_integration.lambda_root,
   ]
 
   rest_api_id = aws_api_gateway_rest_api.submit.id
