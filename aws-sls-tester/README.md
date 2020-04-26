@@ -26,6 +26,9 @@ In order to deploy the application via SLS framework
 
 ### Terraform
 
+Create an s3 bucket to host the packaged function -
+`aws s3api create-bucket --bucket=<name> --region=<region> --profile=<aws_profile>`
+
 In order to deploy the application via Terraform (tf), tf must be installed
 and initialised - this must be done within the `/tf` directory.
 
@@ -35,6 +38,17 @@ Because the only npm dependency is `aws-adk` (and this is pre-installed within
 the node runtime) the packaged function can just be the handler file i.e.
 `handler.js`. This results in simply zipping up the file and copying it into
 the s3 bucket being sufficient.
+```
+zip -j <zip_name> handler.js
+aws s3 cp <zip_name> s3://<bucket_name>/v<version>/<zip_name>
+```
+
+e.g.
+```
+zip -j tf-lambda.zip handler.js
+aws s3 cp tf-lambda.zip s3://my-bucket/v0.0.1/tf-lambda.zip
+```
+
 
 ## Testing
 
