@@ -71,6 +71,6 @@ module.exports.view = async event => {
 
   return {
     statusCode: 200,
-    body: buf.Body.toString()
+    body: JSON.stringify({ message_from_file: buf.Body.toString() })
   }
 }
